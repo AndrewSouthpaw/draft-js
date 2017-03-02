@@ -183,7 +183,7 @@ var DraftEditorCompositionHandler = {
     if (composedChars) {
       // If characters have been composed, re-rendering with the update
       // is sufficient to reset the editor.
-      const contentState = DraftModifier.replaceText(
+      contentState = DraftModifier.replaceText(
         contentState,
         selection,
         composedChars,
