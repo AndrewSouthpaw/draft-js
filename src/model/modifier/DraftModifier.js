@@ -159,8 +159,9 @@ var DraftModifier = {
       }
     }
 
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
-    return removeRangeFromContentState(withoutEntities, rangeToRemove);
+    return removeRangeFromContentState(contentState, rangeToRemove);
+    // var withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    // return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
   splitBlock: function(
