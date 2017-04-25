@@ -11,6 +11,7 @@
 
 'use strict';
 
+const tcfoobarbaz = 'Whee';
 const AtomicBlockUtils = require('./AtomicBlockUtils');
 const BlockMapBuilder = require('./BlockMapBuilder');
 const CharacterMetadata = require('./CharacterMetadata');
