@@ -70,7 +70,6 @@ function getUpdatedSelectionState(
   var focusBlockKey = focusPath.blockKey;
 
   try {
-    foo()
     var focusLeaf = editorState
       .getBlockTree(focusBlockKey)
       .getIn([

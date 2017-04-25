@@ -54,7 +54,6 @@ function getUpdatedSelectionState(editorState: EditorState, anchorKey: string, a
   var focusBlockKey = focusPath.blockKey;
 
   try {
-    foo();
     var focusLeaf = editorState.getBlockTree(focusBlockKey).getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
   } catch (e) {
     window.Raven.captureException('getUpdatedSelectionState: focusLeaf: Block key not found in block tree', {
