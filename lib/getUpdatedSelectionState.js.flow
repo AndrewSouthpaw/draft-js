@@ -33,11 +33,42 @@ function getUpdatedSelectionState(editorState: EditorState, anchorKey: string, a
 
   var anchorPath = DraftOffsetKey.decode(anchorKey);
   var anchorBlockKey = anchorPath.blockKey;
-  var anchorLeaf = editorState.getBlockTree(anchorBlockKey).getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
+
+  try {
+    var anchorLeaf = editorState.getBlockTree(anchorBlockKey).getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
+  } catch (e) {
+    window.Raven.captureException('getUpdatedSelectionState: anchorLeaf: Block key not found in block tree', {
+      extra: {
+        selection: selection.toJS(),
+        blockMap: editorState.getCurrentContent().getBlockMap(),
+        anchorPath: anchorPath,
+        anchorBlockKey: anchorBlockKey,
+        decoratorKey: anchorPath.decoratorKey,
+        leafKey: anchorPath.leafKey
+      }
+    });
+    throw e;
+  }
 
   var focusPath = DraftOffsetKey.decode(focusKey);
   var focusBlockKey = focusPath.blockKey;
-  var focusLeaf = editorState.getBlockTree(focusBlockKey).getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+
+  try {
+    foo();
+    var focusLeaf = editorState.getBlockTree(focusBlockKey).getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+  } catch (e) {
+    window.Raven.captureException('getUpdatedSelectionState: focusLeaf: Block key not found in block tree', {
+      extra: {
+        selection: selection.toJS(),
+        blockMap: editorState.getCurrentContent().getBlockMap(),
+        focusPath: focusPath,
+        focusBlockKey: focusBlockKey,
+        decoratorKey: focusPath.decoratorKey,
+        leafKey: focusPath.leafKey
+      }
+    });
+    throw e;
+  }
 
   var anchorLeafStart: number = anchorLeaf.get('start');
   var focusLeafStart: number = focusLeaf.get('start');

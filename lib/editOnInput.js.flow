@@ -57,7 +57,21 @@ function editOnInput(editor: DraftEditor): void {
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var { blockKey, decoratorKey, leafKey } = DraftOffsetKey.decode(offsetKey);
 
-  var { start, end } = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]);
+  // Special debugging for issue https://trello.com/c/EbctGp9K
+  try {
+    var { start, end } = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]);
+  } catch (e) {
+    window.Raven.captureException('editOnInput: Block key not found in block tree', {
+      extra: {
+        selection: editorState.getSelection(),
+        blockMap: editorState.getCurrentContent().getBlockMap(),
+        blockKey: blockKey,
+        decoratorKey: decoratorKey,
+        leafKey: leafKey
+      }
+    });
+    throw e;
+  }
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);

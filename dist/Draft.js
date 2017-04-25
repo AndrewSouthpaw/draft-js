@@ -4904,11 +4904,42 @@ var Draft =
 
 	  var anchorPath = DraftOffsetKey.decode(anchorKey);
 	  var anchorBlockKey = anchorPath.blockKey;
-	  var anchorLeaf = editorState.getBlockTree(anchorBlockKey).getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
+
+	  try {
+	    var anchorLeaf = editorState.getBlockTree(anchorBlockKey).getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
+	  } catch (e) {
+	    window.Raven.captureException('getUpdatedSelectionState: anchorLeaf: Block key not found in block tree', {
+	      extra: {
+	        selection: selection.toJS(),
+	        blockMap: editorState.getCurrentContent().getBlockMap(),
+	        anchorPath: anchorPath,
+	        anchorBlockKey: anchorBlockKey,
+	        decoratorKey: anchorPath.decoratorKey,
+	        leafKey: anchorPath.leafKey
+	      }
+	    });
+	    throw e;
+	  }
 
 	  var focusPath = DraftOffsetKey.decode(focusKey);
 	  var focusBlockKey = focusPath.blockKey;
-	  var focusLeaf = editorState.getBlockTree(focusBlockKey).getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+
+	  try {
+	    foo();
+	    var focusLeaf = editorState.getBlockTree(focusBlockKey).getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+	  } catch (e) {
+	    window.Raven.captureException('getUpdatedSelectionState: focusLeaf: Block key not found in block tree', {
+	      extra: {
+	        selection: selection.toJS(),
+	        blockMap: editorState.getCurrentContent().getBlockMap(),
+	        focusPath: focusPath,
+	        focusBlockKey: focusBlockKey,
+	        decoratorKey: focusPath.decoratorKey,
+	        leafKey: focusPath.leafKey
+	      }
+	    });
+	    throw e;
+	  }
 
 	  var anchorLeafStart = anchorLeaf.get('start');
 	  var focusLeafStart = focusLeaf.get('start');
@@ -8931,9 +8962,25 @@ var Draft =
 	      decoratorKey = _DraftOffsetKey$decod.decoratorKey,
 	      leafKey = _DraftOffsetKey$decod.leafKey;
 
-	  var _editorState$getBlock = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]),
-	      start = _editorState$getBlock.start,
-	      end = _editorState$getBlock.end;
+	  // Special debugging for issue https://trello.com/c/EbctGp9K
+
+
+	  try {
+	    var _editorState$getBlock = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]),
+	        start = _editorState$getBlock.start,
+	        end = _editorState$getBlock.end;
+	  } catch (e) {
+	    window.Raven.captureException('editOnInput: Block key not found in block tree', {
+	      extra: {
+	        selection: editorState.getSelection(),
+	        blockMap: editorState.getCurrentContent().getBlockMap(),
+	        blockKey: blockKey,
+	        decoratorKey: decoratorKey,
+	        leafKey: leafKey
+	      }
+	    });
+	    throw e;
+	  }
 
 	  var content = editorState.getCurrentContent();
 	  var block = content.getBlockForKey(blockKey);
