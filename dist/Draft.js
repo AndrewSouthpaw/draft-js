@@ -8,7 +8,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-var foobarbaz = "This is unminified"
 var Draft =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -68,6 +67,7 @@ var Draft =
 	 */
 
 	'use strict';
+  var tcfoobarbaz = "This is unminified"
 
 	var AtomicBlockUtils = __webpack_require__(59);
 	var BlockMapBuilder = __webpack_require__(14);
